@@ -5,6 +5,23 @@ from sklearn.cluster import KMeans
 from collections import Counter
 from matplotlib import colors
 
+import requests
+response = requests.get('https://tugasai.github.io/')
+print(response.text)
+
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(response.text, 'html.parser')
+
+for judul in soup.find_all('h1'):
+    print(judul.text.strip())
+    
+import csv
+with open('hasil_scraping.csv', 'w', newline='', encoding='utf-8') as file:
+    writer = csv.writer(file)
+    writer.writerow(['Judul'])
+    for judul in soup.find_all('h1'):
+        writer.writerow([judul.text.strip()])
+
 def get_dominant_colors(image, k=5):
     # Function to get the dominant colors from an image
     # Convert image to RGB from BGR
